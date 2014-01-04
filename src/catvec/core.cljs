@@ -1,6 +1,7 @@
 (ns catvec.core
     (:require [clojure.browser.repl]
-              [clojure.core.rrb-vector :as rrb]))
+              [clojure.core.rrb-vector :as rrb]
+              [catvec.rvec :refer [RVec]]))
 
 (enable-console-print!)
 
