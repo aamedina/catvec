@@ -81,7 +81,7 @@
       (and (<= 0 k) (< k cnt2))
       (Catvec. meta cnt cnt1 cnt2 (-assoc v1 k v) v2 __hash)
       (and (<= cnt1 k) (< k cnt))
-      (Catvec. meta cnt cnt1 cnt2 v1 (-assoc v2 (- k cnt2) v) __hash)
+      (Catvec. meta cnt cnt1 cnt2 v1 (-assoc v2 (- k cnt1) v) __hash)
       (== k cnt) (-conj coll v)
       :else
       (throw (js/Error. (str "Index " k "out of bounds  [0," cnt "]")))))
