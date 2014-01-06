@@ -1,9 +1,8 @@
 (ns catvec.core
     (:require [clojure.browser.repl]
-              [clojure.core.rrb-vector :as rrb]
-              [catvec.rvec :refer [RVec]]))
+              [clojure.core.rrb-vector :as rrb]))
 
-(enable-console-print!)
+;; (enable-console-print!)
 
 (deftype Catvec [meta cnt cnt1 cnt2 v1 v2 ^:mutable __hash]
   ISequential
@@ -82,13 +81,14 @@
       (and (<= 0 k) (< k cnt2))
       (Catvec. meta cnt cnt1 cnt2 (-assoc v1 k v) v2 __hash)
       (and (<= cnt1 k) (< k cnt))
-      (Catvec. meta cnt cnt1 cnt2 v1 (-assoc v2 k v) __hash)
+      (Catvec. meta cnt cnt1 cnt2 v1 (-assoc v2 (- k cnt2) v) __hash)
       (== k cnt) (-conj coll v)
       :else
       (throw (js/Error. (str "Index " k "out of bounds  [0," cnt "]")))))
 
   IVector
-  (-assoc-n [coll n val] (-assoc coll n val))
+  (-assoc-n [coll n val]
+    (-assoc coll n val))
 
   IReduce
   (-reduce [v f]
@@ -126,7 +126,7 @@
   ([v1 v2]
      (let [cnt1 (count v1)
            cnt2 (count v2)]
-       (Catvec. nil (+ cnt1 cnt2) cnt1 cnt2 v1 v2 nil)))
+       (Catvec. nil (+ cnt1 cnt2) cnt1 cnt2 (subvec v1 0) (subvec v2 0) nil)))
   ([v1 v2 v3]
      (catvec (catvec v1 v2) v3))
   ([v1 v2 v3 v4]
@@ -164,3 +164,6 @@
         (rrb/catvec v3)
         (rrb/subvec 100))
     10000))
+
+(def v1 (vec (range 10)))
+(def v2 (vec (range 10 20)))

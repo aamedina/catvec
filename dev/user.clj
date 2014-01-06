@@ -27,16 +27,17 @@
    [ring.util.response :as res]
    [ring.adapter.jetty :refer (run-jetty)]))
 
-(deftemplate index
-  (io/resource "public/index.html")
-  []
-  [:body]
-  (enlive/append
-    (enlive/html [:script (repls/browser-connected-repl-js)])))
+;; (deftemplate index
+;;   (io/resource "public/index.html")
+;;   []
+;;   [:body]
+;;   (enlive/append
+;;     (enlive/html [:script (repls/browser-connected-repl-js)])))
 
 (defroutes app
   (route/resources "/")
-  (ANY "*" req (index)))
+  (ANY "*" req ;; (index)
+       ))
 
 (def system
   "A Var containing an object representing the application under
